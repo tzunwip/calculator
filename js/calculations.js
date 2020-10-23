@@ -10,19 +10,19 @@ let overwrite = 0;
 
 // display updater evaluates input variable op to decide textContent format needed to show relevant information
 function updateDisplay(op) {
-  const calcDisplay = document.querySelector(".calc__display");
+  const calcDisplay = document.querySelector(".calc__displaytext");
   op == "equals" ? calcDisplay.textContent = firstNumber:
   op == "operator" ? calcDisplay.textContent = `${firstNumber}${operator}`:
   op == Number(op) ? calcDisplay.textContent += op:
   calcDisplay.textContent = `${firstNumber}${operator}${secondNumber}`;
 }
 
-// clears display, clears all or only number being edited
+// clears all to zero or only number being edited
 function clearDisplay(clr) {
-  const calcDisplay = document.querySelector(".calc__display");
-  clr == "clearAll" ? calcDisplay.textContent = "":
+  const calcDisplay = document.querySelector(".calc__displaytext");
+  clr == "clearAll" ? calcDisplay.textContent = "0":
   clr == "clear" ? calcDisplay.textContent = `${firstNumber}${operator}${secondNumber}`:
-  console.log("clearDisplay error");
+  calcDisplay.textContent = "";
 }
 
 // takes 3 inputs and writes to total, then resets variables for subsequent inputs. converts string inputs to numbers before calculation
@@ -40,8 +40,10 @@ function operate() {
 
 // function used by each number button, adds each button press as a string
 function pressNum() {
-  // as described under variables
+  // allows number button press to reset calculator
   if (overwrite) {clearAll()};
+  // ensures display and variables are cleared
+  if (firstNumber == "" && operator == "") {clearDisplay()}
 
   // if no operator pressed edit first number, else edit second number
   operator === "" ? firstNumber += this.value:
@@ -76,7 +78,7 @@ function clear() {
 
 // converts any primitive variable to string then delete last character
 function clearLastChar(str) {
-  return str.toString().slice(0, -1);
+  return str.slice(0, -1);
 }
 
 // resets variables to default values and clears display
