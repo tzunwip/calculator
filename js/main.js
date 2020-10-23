@@ -24,12 +24,16 @@ const keypadArray = [
 const keypadColumns = 4;
 const keypadRows = 5;
 
-function generateDOM() {
+function generateCalc() {
   const calcFrame = document.createElement("div");
   calcFrame.classList.add("calc__frame");
 
   const calcDisplay = document.createElement("div");
   calcDisplay.classList.add("calc__display");
+  const calcDisplayText = document.createElement("p");
+  calcDisplayText.classList.add("calc__displaytext");
+  calcDisplayText.textContent = "0";
+  calcDisplay.appendChild(calcDisplayText);
   calcFrame.appendChild(calcDisplay);
 
   const keypadDiv = document.createElement("div");
@@ -39,10 +43,10 @@ function generateDOM() {
   keypadArray.forEach((cur, index) => {
     const btn = document.createElement("button");
 
-    //const column = index % keypadColumns;
-    //const row = Math.floor((index / keypadArray.length) * keypadRows);
+    const column = index % keypadColumns;
+    const row = Math.floor((index / keypadArray.length) * keypadRows);
 
-    //btn.className = `calc__btn calc__column${column} calc__row${row}`;
+    btn.className = `calc__btn calc__column${column} calc__row${row}`;
     btn.id = `btn__${cur.name}`;
     btn.textContent = cur.text;
     btn.value = cur.text;
@@ -58,4 +62,4 @@ function generateDOM() {
   body.appendChild(calcFrame);
 }
 
-generateDOM();
+generateCalc();
