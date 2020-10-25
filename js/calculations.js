@@ -4,9 +4,9 @@ let secondNumber = "";
 let operator = "";
 
 // allows next number button press to reset calculator to zero
-// 1 when equals button pressed
-// 0 when any operator pressed (indicating continuation of current calculations) or clearAll pressed (to reset calculator to default state)
-let overwrite = 0;
+// true when equals button pressed
+// false when any operator pressed (indicating continuation of current calculations) or clearAll pressed (to reset calculator to default state)
+let overwrite = false;
 
 // calculator display textContent = "0" when all input variables empty
 function updateDisplay() {
@@ -38,14 +38,14 @@ function pressNum(num) {
   if (overwrite) {clearAll()};
 
   // if no operator pressed edit first number, else edit second number
-  operator === "" ? firstNumber += numFilter(num, firstNumber):
-  secondNumber += numFilter(num, secondNumber);
+  operator === "" ? firstNumber += numCheck(num, firstNumber):
+  secondNumber += numCheck(num, secondNumber);
 
   updateDisplay();
 }
 
 // prevents multiple decimal entry, returns "0." for "." inputs into empty string
-function numFilter(newNum, oldNum) {
+function numCheck(newNum, oldNum) {
   if (newNum === "." && oldNum.includes(".")) {
     console.log("existing decimal detected");
     return "";
@@ -64,7 +64,7 @@ function pressOperator(op) {
   // modifies operator variable with value from button press
   operator = op;
   // resets overwrite variable to continue allowing number input 
-  overwrite = 0;
+  overwrite = false;
 
   updateDisplay();
 }
@@ -89,7 +89,7 @@ function clearAll() {
   firstNumber = "";
   secondNumber = "";
   operator = "";
-  overwrite = 0;
+  overwrite = false;
 
   updateDisplay();
 }
@@ -97,21 +97,21 @@ function clearAll() {
 // operates existing inputs on equals button press, changes overwrite variable to allow calculator reset on next number button press
 function pressEquals() {
   operate();
-  overwrite = 1;
+  overwrite = true;
   updateDisplay();
 }
 
 // changes number between positive/negative
 function pressNegative() {
-  secondNumber !== "" ? secondNumber = turnNegative(secondNumber):
-  operator === "" ? firstNumber = turnNegative(firstNumber):
+  secondNumber !== "" ? secondNumber = convertNegative(secondNumber):
+  operator === "" ? firstNumber = convertNegative(firstNumber):
   console.log("pressNegative error");
 
   updateDisplay();
 }
 
 // takes input, converts to number type and mutiplies by -1
-function turnNegative(num) {
+function convertNegative(num) {
   return Number(num) * -1;
 }
 
