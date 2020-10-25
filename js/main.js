@@ -1,24 +1,24 @@
 const keypadArray = [
-  {name: "clearAll", text: "AC", onclick: clearAll},
-  {name: "clear", text: "C", onclick: clear},
-  {name: "power", text: "^", onclick: pressOperator},
-  {name: "divide", text: "/", onclick: pressOperator},
-  {name: "seven", text: "7", onclick: pressNum},
-  {name: "eight", text: "8", onclick: pressNum},
-  {name: "nine", text: "9", onclick: pressNum},
-  {name: "multiply", text: "*", onclick: pressOperator},
-  {name: "four", text: "4", onclick: pressNum},
-  {name: "five", text: "5", onclick: pressNum},
-  {name: "six", text: "6", onclick: pressNum},
-  {name: "subtract", text: "-", onclick: pressOperator},
-  {name: "one", text: "1", onclick: pressNum},
-  {name: "two", text: "2", onclick: pressNum},
-  {name: "three", text: "3", onclick: pressNum},
-  {name: "add", text: "+", onclick: pressOperator},
-  {name: "negative", text: "-/+", onclick: pressNegative},
-  {name: "zero", text: "0", onclick: pressNum},
-  {name: "decimal", text: ".", onclick: pressNum},
-  {name: "equals", text: "=", onclick: pressEquals},
+  {name: "clearAll", text: "AC", btnAction: clearAll},
+  {name: "clear", text: "C", btnAction: clear},
+  {name: "power", text: "^", btnAction: pressOperator},
+  {name: "divide", text: "/", btnAction: pressOperator},
+  {name: "seven", text: "7", btnAction: pressNum},
+  {name: "eight", text: "8", btnAction: pressNum},
+  {name: "nine", text: "9", btnAction: pressNum},
+  {name: "multiply", text: "*", btnAction: pressOperator},
+  {name: "four", text: "4", btnAction: pressNum},
+  {name: "five", text: "5", btnAction: pressNum},
+  {name: "six", text: "6", btnAction: pressNum},
+  {name: "subtract", text: "-", btnAction: pressOperator},
+  {name: "one", text: "1", btnAction: pressNum},
+  {name: "two", text: "2", btnAction: pressNum},
+  {name: "three", text: "3", btnAction: pressNum},
+  {name: "add", text: "+", btnAction: pressOperator},
+  {name: "negative", text: "-/+", btnAction: pressNegative},
+  {name: "zero", text: "0", btnAction: pressNum},
+  {name: "decimal", text: ".", btnAction: pressNum},
+  {name: "equals", text: "=", btnAction: pressEquals},
 ];
 
 const keypadColumns = 4;
@@ -50,9 +50,9 @@ function generateCalc() {
     btn.id = `btn__${cur.name}`;
     btn.textContent = cur.text;
     btn.value = cur.text;
-    btn.onclick = cur.onclick;
-
-    //console.log(`cur:${cur.name}, index:${index}`)
+    btn.addEventListener("click", event => {
+      cur.btnAction(event.target.value);
+    })
 
     keypadDiv.appendChild(btn);
   });
@@ -61,5 +61,43 @@ function generateCalc() {
   const body = document.querySelector("body");
   body.appendChild(calcFrame);
 }
+
+// keyboard support
+document.addEventListener("keydown", function(event) {
+  let input = event.key;
+
+  switch (input) {
+    case "0":
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+    case ".":
+      pressNum(input);
+      break;
+    case "^":
+    case "/":
+    case "*":
+    case "+":
+    case "-":
+      pressOperator(input);
+      break;
+    case "=":
+    case "Enter":
+      pressEquals();
+      break;
+    case "Backspace":
+      clear();
+      break;
+    case "Escape":
+      clearAll();
+      break;
+  }
+})
 
 generateCalc();
