@@ -71,16 +71,16 @@ function pressOperator(op) {
 
 // clears one charcter on each button press, prioritize secondNumber > operator > firstNumber
 function clear() {
-  secondNumber !== "" ? secondNumber = clearLastChar(secondNumber):
+  secondNumber !== "" ? secondNumber = deleteLastChar(secondNumber):
   operator !== "" ? operator = "":
-  firstNumber !== "" ? firstNumber = clearLastChar(firstNumber):
+  firstNumber !== "" ? firstNumber = deleteLastChar(firstNumber):
   console.log("clear() error");
 
   updateDisplay();
 }
 
 // converts any primitive variable to string then delete last character
-function clearLastChar(str) {
+function deleteLastChar(str) {
   return str.slice(0, -1);
 }
 
@@ -121,7 +121,7 @@ function formatDecimalPlaces(num) {
     let array = num.toFixed(7).toString().split(".");
 
     while (array[1].charAt(array[1].length - 1) === "0") {
-      array[1] = array[1].slice(0, -1);
+      array[1] = deleteLastChar(array[1]);
     };
 
     return Number(array.join("."));
