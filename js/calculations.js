@@ -3,29 +3,22 @@ let firstNumber = "";
 let secondNumber = "";
 let operator = "";
 
-// allows next number button press to reset calculator
-// 1 when equal button pressed
+// allows next number button press to reset calculator to zero
+// 1 when equals button pressed
 // 0 when any operator pressed (indicating continuation of current calculations) or clearAll pressed (to reset calculator to default state)
 let overwrite = 0;
 
-// display updater evaluates input variable op to decide textContent format needed to show relevant information
-function updateDisplay(op) {
+// calculator display textContent = "0" when all input variables empty
+function updateDisplay() {
   const calcDisplay = document.querySelector(".calc__displaytext");
-  op == "equals" ? calcDisplay.textContent = firstNumber:
-  op == "operator" ? calcDisplay.textContent = `${firstNumber}${operator}`:
-  op == Number(op) ? calcDisplay.textContent += op:
-  calcDisplay.textContent = `${firstNumber}${operator}${secondNumber}`;
+  if (`${firstNumber}${operator}${secondNumber}` === "") {
+    calcDisplay.textContent = "0";
+  } else {
+  calcDisplay.textContent = `${firstNumber}${operator}${secondNumber}`
+  };
 }
 
-// clears all to zero or only number being edited
-function clearDisplay(clr) {
-  const calcDisplay = document.querySelector(".calc__displaytext");
-  clr == "clearAll" ? calcDisplay.textContent = "0":
-  clr == "clear" ? calcDisplay.textContent = `${firstNumber}${operator}${secondNumber}`:
-  calcDisplay.textContent = "";
-}
-
-// takes 3 inputs and writes to total, then resets variables for subsequent inputs. converts string inputs to numbers before calculation
+// takes 3 inputs and calculates total, then resets variables for subsequent inputs. converts string inputs to numbers before calculation
 function operate() {
   operator === "+" ? firstNumber = Number(firstNumber) + Number(secondNumber):
   operator === "-" ? firstNumber = Number(firstNumber) - Number(secondNumber):
@@ -34,36 +27,46 @@ function operate() {
   operator === "^" ? firstNumber = Number(firstNumber) ** Number(secondNumber):
   console.log("operate() error");
 
+  firstNumber = formatDecimalPlaces(firstNumber);
   secondNumber = "";
   operator = "";
 }
 
 // function used by each number button, adds each button press as a string
-function pressNum() {
+function pressNum(num) {
   // allows number button press to reset calculator
   if (overwrite) {clearAll()};
-  // ensures display and variables are cleared
-  if (firstNumber == "" && operator == "") {clearDisplay()}
 
   // if no operator pressed edit first number, else edit second number
-  operator === "" ? firstNumber += this.value:
-  secondNumber += this.value;
+  operator === "" ? firstNumber += numFilter(num, firstNumber):
+  secondNumber += numFilter(num, secondNumber);
 
-  // feeds display updater with value from button press
-  updateDisplay(this.value);
+  updateDisplay();
+}
+
+// prevents multiple decimal entry, returns "0." for "." inputs into empty string
+function numFilter(newNum, oldNum) {
+  if (newNum === "." && oldNum.includes(".")) {
+    console.log("existing decimal detected");
+    return "";
+  } else if (newNum === "." && oldNum === "") {
+    return "0.";
+  } else {
+    return newNum;
+  }
 }
 
 // function used by each operator
-function pressOperator() {
+function pressOperator(op) {
   // operates existing inputs if secondNumber is not empty
   if (secondNumber !== "") {operate()};
 
   // modifies operator variable with value from button press
-  operator = this.value;
+  operator = op;
   // resets overwrite variable to continue allowing number input 
   overwrite = 0;
 
-  updateDisplay("operator");
+  updateDisplay();
 }
 
 // clears one charcter on each button press, prioritize secondNumber > operator > firstNumber
@@ -73,7 +76,7 @@ function clear() {
   firstNumber !== "" ? firstNumber = clearLastChar(firstNumber):
   console.log("clear() error");
 
-  clearDisplay("clear");
+  updateDisplay();
 }
 
 // converts any primitive variable to string then delete last character
@@ -87,20 +90,21 @@ function clearAll() {
   secondNumber = "";
   operator = "";
   overwrite = 0;
-  clearDisplay("clearAll");
+
+  updateDisplay();
 }
 
 // operates existing inputs on equals button press, changes overwrite variable to allow calculator reset on next number button press
 function pressEquals() {
   operate();
   overwrite = 1;
-  updateDisplay("equals");
+  updateDisplay();
 }
 
 // changes number between positive/negative
 function pressNegative() {
   secondNumber !== "" ? secondNumber = turnNegative(secondNumber):
-  operator == "" ? firstNumber = turnNegative(firstNumber):
+  operator === "" ? firstNumber = turnNegative(firstNumber):
   console.log("pressNegative error");
 
   updateDisplay();
@@ -109,4 +113,19 @@ function pressNegative() {
 // takes input, converts to number type and mutiplies by -1
 function turnNegative(num) {
   return Number(num) * -1;
+}
+
+// rounds to 7 decimal places and deletes excess zeroes
+function formatDecimalPlaces(num) {
+  if (num.toString().includes(".")) {
+    let array = num.toFixed(7).toString().split(".");
+
+    while (array[1].charAt(array[1].length - 1) === "0") {
+      array[1] = array[1].slice(0, -1);
+    };
+
+    return Number(array.join("."));
+  } else {
+    return num;
+  }
 }
