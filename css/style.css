@@ -12,6 +12,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 body {
@@ -74,20 +75,12 @@ body {
 }
 
 /* button animation */
-.calc__btn:hover {
-  border: 0.1em solid var(--calc-padborders);
-}
-
 .calc__btn:active {
   background-color: var(--calc-keysactive);
 }
 
 /* keypad darker keys */
-.calc__column3 {
-  background-color: var(--calc-darkkeys);
-}
-
-.calc__row0 {
+.calc__column3, .calc__row0 {
   background-color: var(--calc-darkkeys);
 }
 
