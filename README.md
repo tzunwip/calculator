@@ -1,5 +1,5 @@
 # Basic Calculator
-A basic calculator application created following [The Odin Project](https://theodinproject.com/) [web development 101 lesson](https://theodinproject.com/courses/web-development-101/lessons/calculator).
+A [Basic Calculator](https://tzunwip.github.io/calculator/) javascript application created following [The Odin Project](https://theodinproject.com/) [web development 101 lesson](https://theodinproject.com/courses/web-development-101/lessons/calculator).
 
 ## Features
 * Basic Mathematical Functions
