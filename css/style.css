@@ -15,6 +15,10 @@
   outline: none;
 }
 
+::-webkit-scrollbar { 
+  display: none; /* Chrome Safari */
+}
+
 body {
   font-family: sans-serif;
   display: flex;
@@ -27,7 +31,7 @@ body {
 
 /* calculator */
 .calc__frame {
-  height: 24rem;
+  height: 26rem;
   width: 18rem;
   display: flex;
   flex-direction: column;
@@ -35,7 +39,7 @@ body {
   place-content: center;
   background-color: var(--calc-orange);
   border: 1em solid var(--calc-orange);
-  border-radius: 0.7em;
+  border-radius: 0.7rem;
 }
 
 .calc__display {
@@ -43,15 +47,15 @@ body {
   background: var(--calc-lightgray);
   width: 16rem;
   height: 3rem;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
   padding: 0 0.5rem;
-  align-items: center;
-  justify-content: right;
   border: 0.1rem solid gray;
   border-radius: 0.5em;
 }
 
 .calc__displaytext {
+  width: 100%;
+  align-self: center;
   text-align: right;
   font-size: 2rem;
   overflow: scroll;
